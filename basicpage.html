@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Product Pricing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>CALIBER</h1>
+        <h5>Your very own streaming platform</h5>
+        <p>Pricing Plans</p>
+        <div>
+            <label for="currency-select">Select Currency:</label>
+            <select id="currency-select" onchange="changeCurrency()">
+                <option value="usd">USD</option>
+                <option value="eur">EUR</option>
+                <option value="gbp">GBP</option>
+            </select>
+        </div>
+    </header>
+
+    <section class="pricing-container">
+        <div class="pricing-card">
+            <img src="shutterstock_1149399794.jpg" alt="Free Plan Icon" class="plan-icon">
+            <h2>Free Plan</h2>
+            <p class="price">$0/month</p>
+            <ul>
+                <li>Streaming upto HD(720p)</li>
+                <li>Available for 1 screen</li>
+                <li>Occasional Ads</li>
+            </ul>
+            <button>Select Plan</button>
+        </div>
+
+        <div class="pricing-card">
+            <img src="pro_plan_icon.png" alt="Pro Plan Icon" class="plan-icon">
+            <h2>Pro Plan</h2>
+            <p class="price">$19.99/month</p>
+            <ul>
+                <li>Streaming upto FullHD(1080p)</li>
+                <li>Available for 3 screens</li>
+                <li>No Ads</li>
+            </ul>
+            <button>Select Plan</button>
+        </div>
+
+        <div class="pricing-card">
+            <img src="premium_plan_icon.png" alt="Premium Plan Icon" class="plan-icon">
+            <h2>Premium Plan</h2>
+            <p class="price">$29.99/month</p>
+            <ul>
+                <li>Streaming upto 4K(2140p)</li>
+                <li>Available for 5 screens</li>
+                <li>No Ads</li>
+            </ul>
+            <button>Select Plan</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>Contact us for custom plans and enterprise solutions.</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all pricing cards
+            const pricingCards = document.querySelectorAll('.pricing-card');
+    
+            // Add mouseover and mouseout event listeners to each pricing card
+            pricingCards.forEach(card => {
+                card.addEventListener('mouseover', function () {
+                    // Add the 'active' class on hover
+                    card.classList.add('active');
+    
+                    // Close other open cards
+                    pricingCards.forEach(otherCard => {
+                        if (otherCard !== card && otherCard.classList.contains('active')) {
+                            otherCard.classList.remove('active');
+                        }
+                    });
+                });
+    
+                card.addEventListener('mouseout', function () {
+                    // Remove the 'active' class on mouseout
+                    card.classList.remove('active');
+                });
+            });
+        });
+    </script>
+    <script>
+        function changeCurrency() {
+            const currencySelect = document.getElementById('currency-select');
+            const selectedCurrency = currencySelect.value;
+
+            const pricingCards = document.querySelectorAll('.pricing-card');
+
+            pricingCards.forEach(card => {
+                const priceElement = card.querySelector('.price');
+                const basePrice = parseFloat(card.dataset[`price${selectedCurrency.toUpperCase()}`]);
+                const convertedPrice = convertCurrency(basePrice, selectedCurrency);
+
+                priceElement.textContent = formatCurrency(convertedPrice, selectedCurrency);
+            });
+        }
+
+        function convertCurrency(amount, currency) {
+            // You can implement a currency conversion logic here
+            // For simplicity, let's assume a direct conversion for demonstration purposes
+            switch (currency) {
+                case 'eur':
+                    return amount * 0.85; // 1 USD = 0.85 EUR
+                case 'gbp':
+                    return amount * 0.77; // 1 USD = 0.77 GBP
+                default:
+                    return amount; // Default to USD
+            }
+        }
+
+        function formatCurrency(amount, currency) {
+            // You can implement more sophisticated formatting based on your needs
+            return currency.toUpperCase() + ' ' + amount.toFixed(2);
+        }
+
+        // Initialize prices on page load
+        document.addEventListener('DOMContentLoaded', changeCurrency);
+    </script>
+    
+</body>
+</html>
